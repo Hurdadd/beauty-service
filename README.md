@@ -12,7 +12,6 @@ A backend RESTful API built with Spring Boot for managing beauty service request
 
 - Java 17
 - Spring Boot
-- Spring Security
 - PostgreSQL
 - Maven
 - MapStruct
