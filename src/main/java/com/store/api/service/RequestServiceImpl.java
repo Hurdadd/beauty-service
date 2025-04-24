@@ -1,20 +1,19 @@
 package com.store.api.service;
 
-
 import com.store.api.DTO.CreateRequestDTO;
 import com.store.api.DTO.RequestDTO;
 import com.store.api.entity.Request;
 import com.store.api.mapper.RequestMapper;
 import com.store.api.repository.RequestRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
-
 @Service
 public class RequestServiceImpl implements RequestService {
-    private static final Logger logger = Logger.getLogger(RequestServiceImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(RequestServiceImpl.class);
     private final RequestRepository requestRepository;
     private final RequestMapper requestMapper;
 
@@ -23,51 +22,63 @@ public class RequestServiceImpl implements RequestService {
         this.requestMapper = requestMapper;
     }
 
-
     @Override
     public RequestDTO createRequest(CreateRequestDTO createRequestDTO) {
+        logger.info("در حال ایجاد درخواست جدید");
         Request request = requestMapper.toEntity(createRequestDTO);
-        logger.info("Creating a new post");
         Request savedRequest = requestRepository.save(request);
+        logger.info("درخواست با موفقیت ایجاد شد، ID: {}", savedRequest.getId());
         return requestMapper.toDTO(savedRequest);
     }
 
     @Override
     public void deleteRequest(Long id) {
-        logger.info("Deleting post with id: " + id);
+        logger.info("در حال حذف درخواست با ID: {}", id);
         Request request = requestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
         requestRepository.delete(request);
+        logger.info("درخواست با ID: {} با موفقیت حذف شد", id);
     }
 
     @Override
     public Page<RequestDTO> findByNationalCode(Long nationalCode, Pageable pageable) {
+        logger.info("در حال جستجوی درخواست‌ها با کد ملی: {}", nationalCode);
         Page<Request> requests = requestRepository.findByNationalCode(nationalCode, pageable);
+        logger.info("تعداد درخواست‌های پیدا شده: {}", requests.getTotalElements());
         return requests.map(requestMapper::toDTO);
     }
 
     @Override
     public RequestDTO updateRequest(Long id, CreateRequestDTO createRequestDTO) {
+        logger.info("در حال اپدیت درخواست با ID: {}", id);
         Request request = requestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
         if (createRequestDTO.name() != null) {
-            request.setName(createRequestDTO.name());}
-        if(createRequestDTO.lastName() != null) {
-            request.setLastName(createRequestDTO.lastName());}
-        if(createRequestDTO.age() != null) {
-            request.setAge(createRequestDTO.age());}
-        if(createRequestDTO.nationalCode() != null) {
-            request.setNationalCode(createRequestDTO.nationalCode());}
-        if(createRequestDTO.gender() != null) {
-            request.setGender(createRequestDTO.gender());}
-        if(createRequestDTO.number() != null) {
-            request.setNumber(createRequestDTO.number());}
-        if(createRequestDTO.typeOfBeautyService() != null) {
-            request.setTypeOfBeautyService(createRequestDTO.typeOfBeautyService());}
-        if(createRequestDTO.description() != null) {
-            request.setDescription(createRequestDTO.description());}
+            request.setName(createRequestDTO.name());
+        }
+        if (createRequestDTO.lastName() != null) {
+            request.setLastName(createRequestDTO.lastName());
+        }
+        if (createRequestDTO.age() != null) {
+            request.setAge(createRequestDTO.age());
+        }
+        if (createRequestDTO.nationalCode() != null) {
+            request.setNationalCode(createRequestDTO.nationalCode());
+        }
+        if (createRequestDTO.gender() != null) {
+            request.setGender(createRequestDTO.gender());
+        }
+        if (createRequestDTO.number() != null) {
+            request.setNumber(createRequestDTO.number());
+        }
+        if (createRequestDTO.typeOfBeautyService() != null) {
+            request.setTypeOfBeautyService(createRequestDTO.typeOfBeautyService());
+        }
+        if (createRequestDTO.description() != null) {
+            request.setDescription(createRequestDTO.description());
+        }
         Request updatedRequest = requestRepository.save(request);
-        logger.info("Updating post with id: " + id);
+        logger.info("درخواست با ID: {} با موفقیت اپدیت شد", id);
         return requestMapper.toDTO(updatedRequest);
     }
 }
