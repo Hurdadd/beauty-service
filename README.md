@@ -1,18 +1,19 @@
-# Beauty Service API
+# Beauty Service API #
 
 A backend RESTful API built with Spring Boot for managing beauty service requests.
 
-## Features
+## Features ##
 
 
 - Service Request Management
 - Admin Dashboard (For Monitoring)
 
-## Tech Stack
+### Tech Stack ###
 
 - Java 17
 - Spring Boot
 - PostgreSQL
 - Maven
 - MapStruct
+- GlobalExceptionHandler
 - Git & GitHub
