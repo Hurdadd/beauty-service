@@ -16,12 +16,12 @@ public class Request {
     private Long id ;
     private String name;
     private String lastName;
+    private Integer age;
     private Long nationalCode;
     private Gender gender;
     private Integer number;
     private String typeOfBeautyService;
     private String description;
-    private Integer age;
 
 
 }

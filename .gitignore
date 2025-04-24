@@ -18,12 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-/target
-.idea
-*.iml
-*.log
-.env
-application.yml
 
 
 ### NetBeans ###
