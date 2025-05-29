@@ -1,0 +1,16 @@
+package com.store.api.mapper;
+
+import com.store.api.DTO.CreateRequestDTO;
+import com.store.api.DTO.RequestDTO;
+import com.store.api.entity.Request;
+import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
+
+
+@Mapper(componentModel = "spring")
+
+public interface RequestMapper {
+    Request toEntity(CreateRequestDTO createRequestDTO);
+
+    RequestDTO toDTO(Request request);
+}
