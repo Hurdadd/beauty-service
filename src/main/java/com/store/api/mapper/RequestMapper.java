@@ -12,9 +12,9 @@ import org.mapstruct.Mapping;
 public interface RequestMapper {
 
 
-    @Mapping(source = "nationalCode", target = "nationalCode")
+
     Request toEntity(CreateRequestDTO createRequestDTO);
 
-    @Mapping(source = "nationalCode", target = "nationalCode")
+
     ResponseRequestDTO toDTO(Request request);
 }
