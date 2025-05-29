@@ -14,7 +14,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // مدیریت خطاهای اعتبارسنجی
+    //Handler for validation errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    // مدیریت خطاهای عمومی (مثلاً "Request not found")
+    // Handler for not found errors
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    // مدیریت خطاهای عمومی سرور
+    // Handler for general exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
         Map<String, Object> errorResponse = new HashMap<>();

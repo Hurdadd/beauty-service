@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-    @Query("SELECT r FROM Request r WHERE r.nationalCode = :nationalCode")
-    Page<Request> findByNationalCode(Long nationalCode, Pageable pageable);
+    @Query("SELECT request from Request request WHERE request.nationalCode = :nationalCode ORDER BY request.createdAt DESC" )
+    Page<Request> findByNationalCode(String nationalCode, Pageable pageable);
 }

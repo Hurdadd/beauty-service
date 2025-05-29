@@ -1,7 +1,7 @@
 package com.store.api.service;
 
 import com.store.api.DTO.CreateRequestDTO;
-import com.store.api.DTO.RequestDTO;
+import com.store.api.DTO.ResponseRequestDTO;
 import com.store.api.entity.Request;
 import com.store.api.mapper.RequestMapper;
 import com.store.api.repository.RequestRepository;
@@ -23,7 +23,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public RequestDTO createRequest(CreateRequestDTO createRequestDTO) {
+    public ResponseRequestDTO createRequest(CreateRequestDTO createRequestDTO) {
         logger.info("در حال ایجاد درخواست جدید");
         Request request = requestMapper.toEntity(createRequestDTO);
         Request savedRequest = requestRepository.save(request);
@@ -41,15 +41,14 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Page<RequestDTO> findByNationalCode(Long nationalCode, Pageable pageable) {
+    public Page<ResponseRequestDTO> findByNationalCode(String nationalCode, Pageable pageable) {
         logger.info("در حال جستجوی درخواست‌ها با کد ملی: {}", nationalCode);
         Page<Request> requests = requestRepository.findByNationalCode(nationalCode, pageable);
         logger.info("تعداد درخواست‌های پیدا شده: {}", requests.getTotalElements());
         return requests.map(requestMapper::toDTO);
     }
-
     @Override
-    public RequestDTO updateRequest(Long id, CreateRequestDTO createRequestDTO) {
+    public ResponseRequestDTO updateRequest(Long id, CreateRequestDTO createRequestDTO) {
         logger.info("در حال اپدیت درخواست با ID: {}", id);
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
@@ -80,5 +79,11 @@ public class RequestServiceImpl implements RequestService {
         Request updatedRequest = requestRepository.save(request);
         logger.info("درخواست با ID: {} با موفقیت اپدیت شد", id);
         return requestMapper.toDTO(updatedRequest);
+    }
+    @Override
+    public Page<ResponseRequestDTO> getAllRequests(Pageable pageable) {
+        logger.info("در حال دریافت همه درخواست‌ها");
+        Page<Request> requests = requestRepository.findAll(pageable);
+        return requests.map(requestMapper::toDTO);
     }
 }
