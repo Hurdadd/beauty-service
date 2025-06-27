@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -48,10 +49,13 @@ public class RequestServiceImpl implements RequestService {
         return requests.map(requestMapper::toDTO);
     }
     @Override
+    @Transactional
     public ResponseRequestDTO updateRequest(Long id, CreateRequestDTO createRequestDTO) {
         logger.info("در حال اپدیت درخواست با ID: {}", id);
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
+        requestMapper.updateRequestDTO(createRequestDTO, request);
+        /*
         if (createRequestDTO.name() != null) {
             request.setName(createRequestDTO.name());
         }
@@ -75,10 +79,10 @@ public class RequestServiceImpl implements RequestService {
         }
         if (createRequestDTO.description() != null) {
             request.setDescription(createRequestDTO.description());
-        }
-        Request updatedRequest = requestRepository.save(request);
+        }*/
+        //Request updatedRequest = requestRepository.save(request);
         logger.info("درخواست با ID: {} با موفقیت اپدیت شد", id);
-        return requestMapper.toDTO(updatedRequest);
+        return requestMapper.toDTO(request);
     }
     @Override
     public Page<ResponseRequestDTO> getAllRequests(Pageable pageable) {
