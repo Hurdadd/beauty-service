@@ -1,6 +1,7 @@
 package com.store.api.controller;
 
 import com.store.api.DTO.CreateRequestDTO;
+import com.store.api.DTO.RequestReportDTO;
 import com.store.api.DTO.ResponseRequestDTO;
 import com.store.api.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/requests")
@@ -33,7 +36,7 @@ public class RequestController {
     ) {
         log.info("دریافت درخواست برای ایجاد درخواست جدید: {}", createRequestDTO);
         ResponseRequestDTO requestDTO = requestService.createRequest(createRequestDTO);
-        log.info("درخواست با موفقیت ایجاد شد با ID: {}", createRequestDTO.id());
+        log.info("درخواست با موفقیت ایجاد شد ");
         return ResponseEntity.ok(requestDTO);
     }
 
@@ -97,5 +100,12 @@ public class RequestController {
         ResponseRequestDTO updatedRequest = requestService.updateRequest(id, createRequestDTO);
         log.info("درخواست با ID: {} با موفقیت به‌روزرسانی شد", id);
         return ResponseEntity.ok(updatedRequest);
+    }
+    @GetMapping("/get/report")
+    public ResponseEntity<Page<RequestReportDTO>> getRequestReport()
+    {
+        log.info("درحال دریافت گزارش ماهانه");
+        Page<RequestReportDTO> requestReports = requestService.getRequestReports();
+        return ResponseEntity.ok(requestReports);
     }
 }

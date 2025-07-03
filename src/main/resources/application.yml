@@ -1,0 +1,33 @@
+server:
+
+ port: 5430
+
+
+spring:
+
+ application:
+
+  name: Online Store Backend
+
+ datasource:
+
+  url: jdbc:postgresql://localhost:5432/beauty_service_db
+
+  username: postgres
+
+  password: 1234
+
+  driver-class-name: org.postgresql.Driver
+
+ jpa:
+
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  hibernate:
+
+   ddl-auto: update
+
+ security:
+  user:
+   name: admin
+   password: 1234

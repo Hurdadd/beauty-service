@@ -2,9 +2,7 @@ package com.store.api.entity;
 
 import com.store.api.enums.Gender;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,15 @@ public class Request {
     @Column(name = "national_code", nullable = false, unique = true)
     private String nationalCode;
     private Gender gender;
-    private Long number;
+    private String number;
     private String typeOfBeautyService;
     private String description;
     private Integer age;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+
+
 }
+

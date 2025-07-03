@@ -1,6 +1,7 @@
 package com.store.api.service;
 
 import com.store.api.DTO.CreateRequestDTO;
+import com.store.api.DTO.RequestReportDTO;
 import com.store.api.DTO.ResponseRequestDTO;
 import com.store.api.entity.Request;
 import com.store.api.mapper.RequestMapper;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -28,7 +32,7 @@ public class RequestServiceImpl implements RequestService {
         logger.info("در حال ایجاد درخواست جدید");
         Request request = requestMapper.toEntity(createRequestDTO);
         Request savedRequest = requestRepository.save(request);
-        logger.info("درخواست با موفقیت ایجاد شد، ID: {}", savedRequest.getId());
+        logger.info("درخواست با موفقیت ایجاد شد ");
         return requestMapper.toDTO(savedRequest);
     }
 
@@ -80,14 +84,20 @@ public class RequestServiceImpl implements RequestService {
         if (createRequestDTO.description() != null) {
             request.setDescription(createRequestDTO.description());
         }*/
-        //Request updatedRequest = requestRepository.save(request);
+        Request updatedRequest = requestRepository.save(request);
         logger.info("درخواست با ID: {} با موفقیت اپدیت شد", id);
-        return requestMapper.toDTO(request);
+        return requestMapper.toDTO(updatedRequest);
     }
     @Override
     public Page<ResponseRequestDTO> getAllRequests(Pageable pageable) {
         logger.info("در حال دریافت همه درخواست‌ها");
         Page<Request> requests = requestRepository.findAll(pageable);
         return requests.map(requestMapper::toDTO);
+    }
+
+    @Override
+    public Page<RequestReportDTO> getRequestReports() {
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
+        return requestRepository.countingRequestReports(startDate , Pageable.unpaged());
     }
 }
