@@ -47,10 +47,10 @@ public class RequestRepositoryTests {
     @DisplayName("Testing Create Request")
     @Test
     public void givenRequestObject_whenSave_thenReturnSavedRequest() {
-        // when - عملیات ذخیره را انجام می‌دهیم
+        // when
         Request savedRequest = requestRepository.save(request1);
 
-        // then - نتیجه را بررسی می‌کنیم
+        // then
         assertThat(savedRequest).isNotNull();
         assertThat(savedRequest.getId()).isGreaterThan(0);
     }
@@ -58,7 +58,7 @@ public class RequestRepositoryTests {
     @DisplayName("Testing Get All Requests")
     @Test
     public void givenRequestsList_whenFindAll_thenReturnRequestsList() {
-        // given - یک درخواست دیگر برای این تست خاص اضافه می‌کنیم
+        // given
         Request request2 = new Request();
         request2.setName("Test2");
         request2.setLastName("Test2");

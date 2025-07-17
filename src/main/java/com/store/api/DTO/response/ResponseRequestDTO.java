@@ -1,4 +1,4 @@
-package com.store.api.DTO;
+package com.store.api.DTO.response;
 
 import com.store.api.enums.Gender;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record ResponseRequestDTO(
         Long id ,
-        String name,
+        String firstName,
         String lastName,
         Integer age,
         String nationalCode,

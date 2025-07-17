@@ -1,11 +1,15 @@
-package com.store.api.service;
+package com.store.api.service.impl;
 
-import com.store.api.DTO.CreateRequestDTO;
+
+import com.store.api.DTO.create.CreateRequestDTO;
 import com.store.api.DTO.RequestReportDTO;
-import com.store.api.DTO.ResponseRequestDTO;
+import com.store.api.DTO.response.ResponseRequestDTO;
 import com.store.api.entity.Request;
+import com.store.api.entity.User;
 import com.store.api.mapper.RequestMapper;
 import com.store.api.repository.RequestRepository;
+import com.store.api.repository.UserRepository;
+import com.store.api.service.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,34 +18,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class RequestServiceImpl implements RequestService {
     private static final Logger logger = LoggerFactory.getLogger(RequestServiceImpl.class);
     private final RequestRepository requestRepository;
     private final RequestMapper requestMapper;
+    private final UserRepository userRepository;
 
-    public RequestServiceImpl(RequestRepository requestRepository, RequestMapper requestMapper) {
+
+    public RequestServiceImpl(RequestRepository requestRepository, RequestMapper requestMapper, UserRepository userRepository) {
         this.requestRepository = requestRepository;
         this.requestMapper = requestMapper;
+        this.userRepository = userRepository;
     }
-
+    @Transactional
     @Override
     public ResponseRequestDTO createRequest(CreateRequestDTO createRequestDTO) {
+        User user = userRepository.findById(createRequestDTO.userId()).
+                orElseThrow(() -> new RuntimeException("User not found"));
         logger.info("در حال ایجاد درخواست جدید");
         Request request = requestMapper.toEntity(createRequestDTO);
+        request.setUserId(user.getId());
         Request savedRequest = requestRepository.save(request);
         logger.info("درخواست با موفقیت ایجاد شد ");
         return requestMapper.toDTO(savedRequest);
     }
 
     @Override
+    @Transactional
     public void deleteRequest(Long id) {
         logger.info("در حال حذف درخواست با ID: {}", id);
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
-        requestRepository.delete(request);
         logger.info("درخواست با ID: {} با موفقیت حذف شد", id);
     }
 
@@ -60,8 +69,8 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
         requestMapper.updateRequestDTO(createRequestDTO, request);
         /*
-        if (createRequestDTO.name() != null) {
-            request.setName(createRequestDTO.name());
+        if (createRequestDTO.firstName() != null) {
+            request.setName(createRequestDTO.firstName());
         }
         if (createRequestDTO.lastName() != null) {
             request.setLastName(createRequestDTO.lastName());

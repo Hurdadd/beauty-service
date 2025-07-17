@@ -6,7 +6,6 @@ import com.store.api.repository.RequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class RequestServiceTest {
 

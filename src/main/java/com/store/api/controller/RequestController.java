@@ -1,8 +1,8 @@
 package com.store.api.controller;
 
-import com.store.api.DTO.CreateRequestDTO;
+import com.store.api.DTO.create.CreateRequestDTO;
 import com.store.api.DTO.RequestReportDTO;
-import com.store.api.DTO.ResponseRequestDTO;
+import com.store.api.DTO.response.ResponseRequestDTO;
 import com.store.api.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/requests")
