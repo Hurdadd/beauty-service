@@ -45,14 +45,19 @@ public class RequestServiceImpl implements RequestService {
         return requestMapper.toDTO(savedRequest);
     }
 
-    @Override
-    @Transactional
-    public void deleteRequest(Long id) {
-        logger.info("در حال حذف درخواست با ID: {}", id);
-        Request request = requestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("درخواست پیدا نشد"));
-        logger.info("درخواست با ID: {} با موفقیت حذف شد", id);
-    }
+   @Override
+   @Transactional
+public void deleteRequest(Long id) {
+    logger.info("در حال حذف درخواست با ID: {}", id);
+
+    Request request = requestRepository.findById(id)
+            .orElseThrow(() -> new RequestNotFoundException("درخواست با ID " + id + " پیدا نشد"));
+
+    requestRepository.delete(request);
+
+    logger.info("درخواست با ID: {} با موفقیت حذف شد", id);
+}
+
 
     @Override
     public Page<ResponseRequestDTO> findByNationalCode(String nationalCode, Pageable pageable) {
